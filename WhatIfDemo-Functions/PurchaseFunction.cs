@@ -35,6 +35,8 @@ namespace WhatIfDemo
                     price = requestJson.price
                 };
 
+                log.LogWarning($"######### Got an order from userId {userId} with quoteId {requestJson.quoteId}");
+
                 return new Message(orderMsg.ToByteArray())
                 {
                     // Using quoteId as message Id, to avail from built-in message deduplication

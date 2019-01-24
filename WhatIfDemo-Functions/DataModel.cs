@@ -37,6 +37,7 @@ namespace WhatIfDemo
             public string userId { get; set; }
             public string productId { get; set; }
             public decimal paymentAmount { get; set; }
+            public DateTime dateCreated { get; set; }
         }
 
         public class Claim
@@ -44,6 +45,7 @@ namespace WhatIfDemo
             public Guid id { get; set; }
             public Guid policyId { get; set; }
             public decimal amount { get; set; }
+            public DateTime dateCreated { get; set; }
         }
 
         private const string ConnectionStringVariableName = "AzureSqlConnection";
