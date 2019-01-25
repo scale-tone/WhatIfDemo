@@ -1,0 +1,5 @@
+{
+  "facebookAppId": "<Register your Facebook app at https://developers.facebook.com/apps and put your appId here>",
+  "tokenValidationUri": "https://whatifdemofunctionapp.azurewebsites.net/.auth/login/facebook",
+  "backendBaseUri": "https://whatifdemofunctionapp.azurewebsites.net/api"
+}

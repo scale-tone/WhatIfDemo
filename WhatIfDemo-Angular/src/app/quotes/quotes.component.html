@@ -1,0 +1,14 @@
+<h2 *ngIf="!!quotes">Here are your quotes:</h2>
+<div class="box" *ngIf="!!quotes">
+
+    <div *ngFor="let quote of quotes">
+        <img src="assets/policy.png">
+        <span class="center-text-vertically">
+            {{quote.title| slice:0:40}}
+        </span>
+        <button class="btn-align-right" (click)="buyPolicy(quote)">Buy for ${{quote.price}}</button>
+    </div>
+</div>
+<p>
+    <button (click)="reloadQuotes()">Reload quotes</button>
+</p>

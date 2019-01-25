@@ -1,27 +1,19 @@
 <h1>WhatIf Demo</h1>
 
-<div *ngIf="!!inProgress">
+<div *ngIf="!!progressService.inProgress">
     <img src="assets/gear.png"> Please, wait...
 </div>
 
-<div *ngIf="!!errorMessage">
-    <h2 class="bad">ERROR: {{errorMessage}}</h2>
+<div *ngIf="!!progressService.errorMessage">
+    <h2 class="bad">ERROR: {{progressService.errorMessage}}</h2>
 </div>
 
 <hr>
-<h2 *ngIf="userId === null">Please, login with Facebook:</h2>
+
 <div id="fb-root"></div>
-<div *ngIf="userId === null" class="fb-login-button" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="true"></div>
-
-<h2 *ngIf="!!quotes">Here are your quotes:</h2>
-<div class="box" *ngIf="!!quotes">
-
-    <div *ngFor="let quote of quotes">
-        <img src="assets/policy.png">
-        <span class="center-text-vertically">
-            {{quote.title| slice:0:40}}
-        </span>
-        <button class="btn-align-right" (click)="buyPolicy(quote)">Buy for ${{quote.price}}</button>
-    </div>
-
+<div *ngIf="authService.userId === null">
+    <h2>Please, login with Facebook:</h2>
+    <div class="fb-login-button" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="true"></div>
 </div>
+
+<router-outlet *ngIf="authService.userId !== null" ></router-outlet>

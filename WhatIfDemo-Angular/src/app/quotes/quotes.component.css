@@ -1,0 +1,4 @@
+img {height: 25px;}
+.box {border: 1px solid black; padding: 6px; max-width: 550px;}
+.btn-align-right {float: right; width: 170px}
+.center-text-vertically {vertical-align: super}

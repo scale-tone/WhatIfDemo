@@ -1,9 +1,7 @@
 a.to-toc { margin: 30px 0; }
-button { font-size: 100%; margin: 0 2px; }
+img {height: 40px;}
 div[clickable] {cursor: pointer; max-width: 200px; margin: 16px 0}
 #noTrackByCnt, #withTrackByCnt {color: darkred; max-width: 450px; margin: 4px;}
-img {height: 25px;}
-.box {border: 1px solid black; padding: 6px; max-width: 550px;}
 .child-div {margin-left: 1em; font-weight: normal}
 .context {margin-left: 1em;}
 .hidden {display: none}
@@ -15,5 +13,3 @@ img {height: 25px;}
 .toe {margin-left: 1em; font-style: italic;}
 little-hero {color:blue; font-size: smaller; background-color: Turquoise }
 .to-toc {margin-top: 10px; display: block}
-.btn-align-right {float: right; width: 170px}
-.center-text-vertically {vertical-align: super}
