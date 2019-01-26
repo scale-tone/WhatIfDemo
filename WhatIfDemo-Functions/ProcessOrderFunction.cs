@@ -1,6 +1,8 @@
 using Microsoft.Azure.WebJobs;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
 using SendGrid.Helpers.Mail;
@@ -22,7 +24,7 @@ namespace WhatIfDemo
                 DurableOrchestrationClient orchestrationClient,
             ILogger log)
         {
-            log.LogWarning($"######### Processing order from userId {order.userId}");
+            log.LogWarning($"Processing order from userId {order.userId}");
 
             // Here is where we instantiate a new Policy object
             var policy = new WhatIfDemoDbDataContext.Policy
@@ -84,9 +86,29 @@ namespace WhatIfDemo
             // Saving the policy to Azure SQL DB
             var ctx = new WhatIfDemoDbDataContext();
             ctx.Policies.Add(policy);
-            await ctx.SaveChangesAsync();
 
-            log.LogWarning($"######### Saved policy {policy.id} from userId {policy.userId}");
+            try
+            {
+                await ctx.SaveChangesAsync();
+
+                log.LogWarning($"Saved policy {policy.id} from userId {policy.userId}");
+            }
+            catch (DbUpdateException ex)
+            {
+                var innerEx = ex.InnerException as SqlException;
+
+                // if it was a violation of primary key constraint
+                if (innerEx?.Number == 2627)
+                {
+                    // Explicitly handling the case of duplicated execution.
+                    // Which might happen, if the process crashes or restarts.
+                    log.LogError($"Failed to add policy {policy.id} from userId {policy.userId}: {innerEx.Message}");
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
             // Returning the Policy object back, just to show this context propagation mechanism
             return policy;
