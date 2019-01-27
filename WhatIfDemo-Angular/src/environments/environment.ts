@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+	production: false,
+	
+	// Register your Facebook app at and specify it's appId here:
+	facebookAppId: '',
+	
+	// Deploy Azure Functions project to Azure and specify it's base URI (like 'https://myazurefunctionapp.azurewebsites.net') here:
+	backendBaseUri: ''
 };
 
 /*

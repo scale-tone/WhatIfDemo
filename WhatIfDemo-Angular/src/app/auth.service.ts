@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-// Change Facebook AppId and other settings inside this file
-import * as config from '../config.json';
+// Change Facebook AppId and other settings inside ../environments/environment.ts file
+import { environment } from '../environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +26,7 @@ export class AuthService {
             access_token: accessToken
         };
 
-        return this.http.post(config.tokenValidationUri, tokenValidationBody).pipe(
+        return this.http.post(environment.backendBaseUri + '/.auth/login/facebook', tokenValidationBody).pipe(
             tap((validationResponse: any) => {
                 
                 this.userId = validationResponse.user.userId;

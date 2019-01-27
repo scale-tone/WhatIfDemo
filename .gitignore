@@ -331,3 +331,6 @@ ASALocalRun/
 
 # Angular build drop
 dist/
+
+# Angular local environment parameters
+environment.local.ts

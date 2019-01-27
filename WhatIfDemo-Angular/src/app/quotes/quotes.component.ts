@@ -4,8 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 import { ProgressService } from '../progress.service';
 
-// Change Facebook AppId and other settings inside this file
-import * as config from '../../config.json';
+// Change Facebook AppId and other settings inside ../environments/environment.ts file
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-quotes',
@@ -27,7 +27,7 @@ export class QuotesComponent implements OnInit {
     
     // Loads the latest quotes from server
     reloadQuotes() {
-        this.http.get(config.backendBaseUri + '/GetQuotes?userId=' + this.authService.userId, this.authService.backendHttpOptions)
+        this.http.get(environment.backendBaseUri + '/api/GetQuotes?userId=' + this.authService.userId, this.authService.backendHttpOptions)
             .subscribe(this.progressService.getObserver(null, (response: any) => {
                 this.quotes = response;
             }));
@@ -36,7 +36,7 @@ export class QuotesComponent implements OnInit {
     // Purchases the selected policy and reloads the list
     buyPolicy(policy: any) {
 
-        this.http.post(config.backendBaseUri + '/Purchase?userId=' + this.authService.userId, policy, this.authService.backendHttpOptions)
+        this.http.post(environment.backendBaseUri + '/api/Purchase?userId=' + this.authService.userId, policy, this.authService.backendHttpOptions)
             .subscribe(this.progressService.getObserver(null, () => {
 
                 alert('Thank you for purchasing ' + policy.title + '! You will be charged daily!');

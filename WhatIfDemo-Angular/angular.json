@@ -28,6 +28,16 @@
             "scripts": []
           },
           "configurations": {
+		  
+            "local": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ]
+            },
+		  
             "production": {
               "fileReplacements": [
                 {
@@ -60,6 +70,11 @@
             "browserTarget": "WhatIfDemo-Angular:build"
           },
           "configurations": {
+		  
+            "local": {
+              "browserTarget": "WhatIfDemo-Angular:build:local"
+            },
+		  
             "production": {
               "browserTarget": "WhatIfDemo-Angular:build:production"
             }
