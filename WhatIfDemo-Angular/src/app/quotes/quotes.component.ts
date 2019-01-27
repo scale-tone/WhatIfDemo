@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { AuthService } from '../auth.service';
@@ -12,16 +12,14 @@ import { environment } from '../../environments/environment';
     templateUrl: './quotes.component.html',
     styleUrls: ['./quotes.component.css']
 })
-export class QuotesComponent implements OnInit {
+export class QuotesComponent {
 
     quotes = null;
 
     constructor(private authService: AuthService,
         private progressService: ProgressService,
         private http: HttpClient)
-    {}
-
-    ngOnInit() {
+    {
         this.reloadQuotes();
     }
     

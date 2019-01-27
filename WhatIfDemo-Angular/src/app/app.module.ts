@@ -5,16 +5,19 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { QuotesComponent } from './quotes/quotes.component';
+import { ClaimsComponent } from './claims/claims.component';
 
 const appRoutes: Routes = [
     { path: 'quotes', component: QuotesComponent },
+    { path: 'claims', component: ClaimsComponent },
     { path: '**', component: QuotesComponent }
 ];
 
 @NgModule({
     declarations: [
         AppComponent,
-        QuotesComponent
+        QuotesComponent,
+        ClaimsComponent
     ],
     imports: [
         BrowserModule,

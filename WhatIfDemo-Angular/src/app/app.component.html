@@ -11,9 +11,14 @@
 <hr>
 
 <div id="fb-root"></div>
-<div *ngIf="authService.userId === null">
+<div *ngIf="!authService.isLoggedIn">
     <h2>Please, login with Facebook:</h2>
     <div class="fb-login-button" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="true"></div>
 </div>
 
-<router-outlet *ngIf="authService.userId !== null" ></router-outlet>
+<nav *ngIf="authService.isLoggedIn">
+    <a routerLink="/quotes" routerLinkActive="active">Buy new policies</a>
+    <a routerLink="/claims" routerLinkActive="active">Submit a claim</a>
+</nav>
+
+<router-outlet *ngIf="authService.isLoggedIn"></router-outlet>

@@ -11,6 +11,11 @@ import { environment } from '../environments/environment';
 })
 export class AuthService {
 
+    // Detects whether the user has logged in
+    get isLoggedIn(): boolean{
+        return this.userId !== null;
+    }
+
     // Here the user's id will be stored after a successful login.
     userId: string = null;
     // These are HttpOptions to be used for communicating with Azure Functions backend. Will contain the session token, after a successful login.
