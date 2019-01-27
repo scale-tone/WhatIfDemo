@@ -1,0 +1,192 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "deployEnv": {
+            "type": "string",
+            "defaultValue": "test",
+            "allowedValues": [
+                "test",
+                "prod"
+            ]
+        },
+        "storageAccountType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_GRS",
+                "Standard_RAGRS"
+            ]
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]"
+        }
+    },
+    "variables": {
+        "appName": "[concat('whatifdemo', '-', parameters('deployEnv'))]",
+        "functionAppName": "[variables('appName')]",
+        "hostingPlanName": "[concat(variables('appName'), '-plan')]",
+        "applicationInsightsName": "[concat(variables('appName'), '-Ai')]",
+        "storageAccountName": "[replace(concat(variables('appName'), 'storage'), '-', '')]",
+        "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+        "keyVaultName": "[concat(variables('appName'), '-keyvault')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('storageAccountName')]",
+            "apiVersion": "2016-12-01",
+            "location": "[parameters('location')]",
+            "kind": "Storage",
+            "sku": {
+                "name": "[parameters('storageAccountType')]"
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2015-04-01",
+            "name": "[variables('hostingPlanName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "name": "[variables('hostingPlanName')]",
+                "computeMode": "Dynamic",
+                "sku": "Dynamic"
+            }
+        },
+        {
+            "apiVersion": "2015-08-01",
+            "type": "Microsoft.Web/sites",
+            "name": "[variables('functionAppName')]",
+            "location": "[parameters('location')]",
+            "kind": "functionapp",
+            "identity": {
+                "type": "SystemAssigned"
+            } ,
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            ],
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "AzureWebJobsDashboard",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTSHARE",
+                            "value": "[toLower(variables('functionAppName'))]"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~2"
+                        },
+                        {
+							"name": "WEBSITE_NODE_DEFAULT_VERSION",
+							"value": "8.11.1"
+						},
+						{
+							"name": "FUNCTIONS_WORKER_RUNTIME",
+							"value": "dotnet"
+						},
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[reference(resourceId('microsoft.insights/components/', variables('applicationInsightsName')), '2015-05-01').InstrumentationKey]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "apiVersion": "2018-05-01-preview",
+            "name": "[variables('applicationInsightsName')]",
+            "type": "microsoft.insights/components",
+            "location": "[parameters('location')]",
+            "tags": {
+                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', variables('applicationInsightsName'))]": "Resource"
+            },
+            "properties": {
+                "ApplicationId": "[variables('applicationInsightsName')]",
+                "Request_Source": "IbizaWebAppExtensionCreate"
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "name": "[variables('keyVaultName')]",
+            "apiVersion": "2016-10-01",
+            "location": "[parameters('location')]",
+            "properties": {
+              "accessPolicies": [],
+              "enabledForDeployment": false,
+              "enabledForDiskEncryption": false,
+              "enabledForTemplateDeployment": false,
+              "tenantId": "[subscription().tenantId]",
+              "sku": {
+                "name": "standard",
+                "family": "A"
+              }
+            }
+          },
+          {
+			"type": "Microsoft.KeyVault/vaults/accessPolicies",
+			"name": "[concat(variables('keyVaultName'), '/add')]",
+			"apiVersion": "2018-02-14",
+			"properties": {
+				"accessPolicies": [
+					{
+						"tenantId": "[subscription().tenantId]",
+						"objectId": "[reference(concat('Microsoft.Web/sites/', variables('functionAppName')), '2018-02-01', 'Full').identity.principalId]",
+						"permissions": {
+							"secrets": [
+								"get"
+							]
+						}
+					},
+					{
+						"comments": "Antton for local access",
+						"tenantId": "[subscription().tenantId]",
+						"objectId": "afe4b66c-befb-4fda-b638-5ef2a4af4899",
+						"permissions": {
+							"secrets": [
+								"Get",
+								"List",
+								"Recover",
+								"Backup",
+								"Restore"
+							]
+						}
+					},
+					{
+						"comments": "Konstantin for local access",
+						"tenantId": "[subscription().tenantId]",
+						"objectId": "509cc6fe-052a-41a9-b232-0a7bcda4fea3",
+						"permissions": {
+							"secrets": [
+								"Get",
+								"List",
+								"Recover",
+								"Backup",
+								"Restore"
+							]
+						}
+					}
+				]
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
+				"[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+			]
+		}
+    ]
+}
