@@ -30,8 +30,8 @@ class ProgressObserver<TResult> implements Observer<TResult> {
     }
 
     next(result: TResult) {
-        this.successHandler(result);
         this.progressService.inProgress = false;
+        this.successHandler(result);
         this.progressService.changeDetectorRef.detectChanges();
     }
 
@@ -41,5 +41,6 @@ class ProgressObserver<TResult> implements Observer<TResult> {
         this.progressService.changeDetectorRef.detectChanges();
     }
 
-    complete() { }
+    complete() { 
+    }
 }

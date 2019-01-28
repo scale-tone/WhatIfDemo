@@ -8,8 +8,6 @@
     <h2 class="bad">ERROR: {{progressService.errorMessage}}</h2>
 </div>
 
-<hr>
-
 <div id="fb-root"></div>
 <div *ngIf="!authService.isLoggedIn">
     <h2>Please, login with Facebook:</h2>
@@ -20,5 +18,7 @@
     <a routerLink="/quotes" routerLinkActive="active">Buy new policies</a>
     <a routerLink="/claims" routerLinkActive="active">Submit a claim</a>
 </nav>
+
+<hr>
 
 <router-outlet *ngIf="authService.isLoggedIn"></router-outlet>

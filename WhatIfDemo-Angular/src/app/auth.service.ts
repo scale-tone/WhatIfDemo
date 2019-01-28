@@ -25,7 +25,7 @@ export class AuthService {
     }
 
     // Turns Facebook's access token into Azure Functions session token
-    login(accessToken: string): Observable<Object> {
+    login(accessToken: string): Observable<any> {
 
         var tokenValidationBody = {
             access_token: accessToken
@@ -42,5 +42,10 @@ export class AuthService {
                 };
             })
         );
-    }    
+    }
+
+    // Gets a SAS token for uploading files to Azure Blob
+    getBlobCredentialsForUpload(): Observable<any> {
+        return this.http.get(environment.backendBaseUri + '/api/GetBlobSasToken', this.backendHttpOptions);
+    }
 }

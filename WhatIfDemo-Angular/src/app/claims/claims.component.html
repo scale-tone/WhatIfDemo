@@ -1,3 +1,16 @@
+
+<h2>Pick up your documents:</h2>
+<div class="box">
+    <div class="form-field">
+        Driver's license:
+        <input (change)="onDriversLicenseFileChange($event)" type="file" class="input-align-right" />
+    </div> 
+    <div class="form-field">
+        Other files:
+        <input (change)="onOtherFilesChange($event)" type="file" multiple="multiple" class="input-align-right" />
+    </div>
+</div>
+
 <p>
-  claims works!
+    <button (click)="submitClaim()" [disabled]="submitButtonDisabled">Submit</button>
 </p>

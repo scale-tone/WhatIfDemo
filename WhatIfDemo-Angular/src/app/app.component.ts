@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { AuthService } from './auth.service';
 import { ProgressService } from './progress.service';
