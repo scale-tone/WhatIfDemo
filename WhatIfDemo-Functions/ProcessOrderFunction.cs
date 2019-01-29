@@ -37,12 +37,12 @@ namespace WhatIfDemo
             };
 
             // Starting the policy processing Saga
-            await orchestrationClient.StartNewAsync(nameof(Orchestrator), policy.id.ToString(), policy);
+            await orchestrationClient.StartNewAsync(nameof(ProcessOrderOrchestrator), policy.id.ToString(), policy);
         }
 
         // Orchestrates policy creation and starts the charging process
-        [FunctionName(nameof(Orchestrator))]
-        public static async Task Orchestrator(
+        [FunctionName(nameof(ProcessOrderOrchestrator))]
+        public static async Task ProcessOrderOrchestrator(
             [OrchestrationTrigger] DurableOrchestrationContext context, 
             ILogger log)
         {
@@ -53,12 +53,12 @@ namespace WhatIfDemo
             policy = await context.CallActivityWithRetryAsync<WhatIfDemoDbDataContext.Policy>(nameof(SavePolicyToDb), retryOptions, policy);
 
             // Now let's start charging the customer via a sub-orchestration
-            await context.CallSubOrchestratorAsync(nameof(SubOrchestrator), policy);
+            await context.CallSubOrchestratorAsync(nameof(ProcessOrderSubOrchestrator), policy);
         }
 
         // Charges the customer periodically
-        [FunctionName(nameof(SubOrchestrator))]
-        public static async Task SubOrchestrator(
+        [FunctionName(nameof(ProcessOrderSubOrchestrator))]
+        public static async Task ProcessOrderSubOrchestrator(
             [OrchestrationTrigger] DurableOrchestrationContext context,
             ILogger log)
         {
@@ -81,34 +81,20 @@ namespace WhatIfDemo
         // Stores the newly issued policy to Azure SQL
         [FunctionName(nameof(SavePolicyToDb))]
         public static async Task<WhatIfDemoDbDataContext.Policy> SavePolicyToDb(
-            [ActivityTrigger] WhatIfDemoDbDataContext.Policy policy, ILogger log)
+            [ActivityTrigger] WhatIfDemoDbDataContext.Policy policy, 
+            ILogger log)
         {
             // Saving the policy to Azure SQL DB
             var ctx = new WhatIfDemoDbDataContext();
             ctx.Policies.Add(policy);
 
-            try
-            {
-                await ctx.SaveChangesAsync();
+            await ctx.SaveChangesIdempotentlyAsync(ex => {
+                // Explicitly handling the case of duplicated execution.
+                // Which might happen, if the process crashes or restarts.
+                log.LogError($"Failed to add policy {policy.id} from userId {policy.userId}: {ex.Message}");
+            });
 
-                log.LogWarning($"Saved policy {policy.id} from userId {policy.userId}");
-            }
-            catch (DbUpdateException ex)
-            {
-                var innerEx = ex.InnerException as SqlException;
-
-                // if it was a violation of primary key constraint
-                if (innerEx?.Number == 2627)
-                {
-                    // Explicitly handling the case of duplicated execution.
-                    // Which might happen, if the process crashes or restarts.
-                    log.LogError($"Failed to add policy {policy.id} from userId {policy.userId}: {innerEx.Message}");
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            log.LogWarning($"Saved policy {policy.id} from userId {policy.userId}");
 
             // Returning the Policy object back, just to show this context propagation mechanism
             return policy;

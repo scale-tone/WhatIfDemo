@@ -28,16 +28,8 @@ namespace WhatIfDemo
             // Loading user-specific data from Azure SQL database
             var ctx = new WhatIfDemoDbDataContext();
 
-            var existingPoliciesAndClaims = await
-            (
-                from p in ctx.Policies
-                join c in ctx.Claims on p.id equals c.policyId into userClaims
-                where p.userId == userId
-                select new { p.id, userClaims }
-            ).ToArrayAsync();
-
-            int policiesCount = existingPoliciesAndClaims.Length;
-            int claimsCount = existingPoliciesAndClaims.SelectMany(p => p.userClaims).Count();
+            int policiesCount = await ctx.Policies.CountAsync(p => p.userId == userId);
+            int claimsCount = await ctx.Claims.CountAsync(c => c.userId == userId);
 
             // Giving 10% penalty for each claim, but not more than 200%
             decimal penalty = 1M + 0.1M * claimsCount;

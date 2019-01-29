@@ -43,7 +43,8 @@ namespace WhatIfDemo
         public class Claim
         {
             public Guid id { get; set; }
-            public Guid policyId { get; set; }
+            public string userId { get; set; }
+            public string licenseId { get; set; }
             public decimal amount { get; set; }
             public DateTime dateCreated { get; set; }
         }
