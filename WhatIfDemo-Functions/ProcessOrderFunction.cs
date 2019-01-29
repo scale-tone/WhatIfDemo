@@ -1,8 +1,6 @@
 using Microsoft.Azure.WebJobs;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
 using SendGrid.Helpers.Mail;
@@ -15,7 +13,9 @@ namespace WhatIfDemo
         private static readonly TimeSpan ChargingInterval = TimeSpan.FromMinutes(2);
         private const string EmailAddressVariableName = "TestEmailAddress";
 
-        // Processes orders from the queue
+        // Processes orders from Service Bus queue
+        // WARNING: to ensure your messages are not processed twice, better to set the Lock Duration period
+        // for the queue to something significant.
         [FunctionName(nameof(ProcessOrder))]
         public static async Task ProcessOrder(
             [ServiceBusTrigger("Orders", Connection = "ServiceBusConnection")]
