@@ -101,7 +101,7 @@ namespace WhatIfDemo
             var payload = new
             {
                 message = $"Click to approve claim {claim.id} from user {claim.userId} with license {claim.licenseId}",
-                uri = $"{GetHostName()}/api/{nameof(ApproveClaim)}?claimId={claim.id}"
+                uri = $"{Helpers.GetHostName()}/api/{nameof(ApproveClaim)}?claimId={claim.id}"
             };
 
             await hub.SendNotificationAsync(new FcmNotification($"{{\"data\":{payload.ToJson()}}}"));
@@ -196,20 +196,6 @@ namespace WhatIfDemo
         private static string ToJson(this object o)
         {
             return JsonConvert.SerializeObject(o);
-        }
-
-        private static string GetHostName()
-        {
-            string hostName = Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME");
-
-            if (hostName.StartsWith("0.0.0.0"))
-            {
-                return $"https://{hostName.Replace("0.0.0.0", "localhost")}";
-            }
-            else
-            {
-                return $"https://{hostName}";
-            }
         }
     }
 }

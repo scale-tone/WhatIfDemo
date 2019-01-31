@@ -7,7 +7,7 @@ While trying to keep things simple.
 - [Purchase](https://github.com/scale-tone/WhatIfDemo/blob/master/WhatIfDemo-Functions/PurchaseFunction.cs) - receives an order and puts it into Azure Service Bus queue for further processing.
 - [ProcessOrder](https://github.com/scale-tone/WhatIfDemo/blob/master/WhatIfDemo-Functions/ProcessOrderFunction.cs) - processes orders from Azure Service Bus queue. Adds a record to Azure SQL table and then starts a process of sending periodic emails via SendGrid.
 - [ProcessClaim](https://github.com/scale-tone/WhatIfDemo/blob/master/WhatIfDemo-Functions/ProcessClaimFunction.cs) - picks up a newly uploaded image file, tries to extract a driving license number from it with Azure Cognitive Services, then sends a push notification via Azure Notification Hubs, waits for an approval event (an HTTP request) and finally writes data to Azure SQL table.
-- [GetBlobSasTokenFunction](https://github.com/scale-tone/WhatIfDemo/blob/master/WhatIfDemo-Functions/GetBlobSasTokenFunction.cs) - generates a temporary write-only SAS token for uploading files to Azure Blob.
+- [GetBlobSasTokenFunctions](https://github.com/scale-tone/WhatIfDemo/blob/master/WhatIfDemo-Functions/GetBlobSasTokenFunctions.cs) - generates temporary write-only SAS tokens for uploading files to Azure Blob.
 
 Expects the following Application Settings to be present in your Azure Function App's configuration:
 

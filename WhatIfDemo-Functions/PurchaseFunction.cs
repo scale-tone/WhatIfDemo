@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.ServiceBus;
 using Newtonsoft.Json;
-using System.Text;
 using Microsoft.Azure.ServiceBus.InteropExtensions;
 
 namespace WhatIfDemo
@@ -17,13 +16,13 @@ namespace WhatIfDemo
         [FunctionName(nameof(Purchase))]
         [return: ServiceBus("Orders", Connection = "ServiceBusConnection")]
         public static async Task<Message> Purchase(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest request,
             ILogger log)
         {
-            // The userId should be passed via query string
-            string userId = req.Query[nameof(userId)];
+            // Extracting userId from session token
+            string userId = await Helpers.GetAccessingUserId(request);
 
-            using(var reader = new StreamReader(req.Body))
+            using (var reader = new StreamReader(request.Body))
             {
                 dynamic requestJson = JsonConvert.DeserializeObject(await reader.ReadToEndAsync());
 

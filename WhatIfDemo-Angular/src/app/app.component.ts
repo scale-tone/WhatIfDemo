@@ -19,12 +19,6 @@ declare var FB: any;
 })
 export class AppComponent implements OnInit {
 
-	inProgress = false;
-	userId = null;
-	quotes = null;
-	errorMessage = null;
-	backendHttpOptions = null;
-
     constructor(public authService: AuthService,
         public progressService: ProgressService,
         private changeDetectorRef: ChangeDetectorRef)

@@ -44,8 +44,8 @@ export class AuthService {
         );
     }
 
-    // Gets a SAS token for uploading files to Azure Blob
-    getBlobCredentialsForUpload(): Observable<any> {
-        return this.http.get(environment.backendBaseUri + '/api/GetBlobSasToken', this.backendHttpOptions);
+    // Gets SAS tokens for each file to be uploaded to Azure Blob. Each token fits the corresponding file and doesn't fit any other name.
+    getBlobCredentialsForUpload(fileNames: string[]): Observable<any> {
+        return this.http.post(environment.backendBaseUri + '/api/GetBlobSasTokens', fileNames, this.backendHttpOptions);
     }
 }

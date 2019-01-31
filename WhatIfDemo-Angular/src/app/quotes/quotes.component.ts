@@ -25,7 +25,7 @@ export class QuotesComponent {
     
     // Loads the latest quotes from server
     reloadQuotes() {
-        this.http.get(environment.backendBaseUri + '/api/GetQuotes?userId=' + this.authService.userId, this.authService.backendHttpOptions)
+        this.http.get(environment.backendBaseUri + '/api/GetQuotes', this.authService.backendHttpOptions)
             .subscribe(this.progressService.getObserver(null, (response: any) => {
                 this.quotes = response;
             }));
@@ -34,7 +34,7 @@ export class QuotesComponent {
     // Purchases the selected policy and reloads the list
     buyPolicy(policy: any) {
 
-        this.http.post(environment.backendBaseUri + '/api/Purchase?userId=' + this.authService.userId, policy, this.authService.backendHttpOptions)
+        this.http.post(environment.backendBaseUri + '/api/Purchase', policy, this.authService.backendHttpOptions)
             .subscribe(this.progressService.getObserver(null, () => {
 
                 alert('Thank you for purchasing ' + policy.title + '! You will be charged daily!');

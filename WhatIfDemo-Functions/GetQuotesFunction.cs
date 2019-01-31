@@ -16,14 +16,13 @@ namespace WhatIfDemo
         [FunctionName(nameof(GetQuotes))]
         public static async Task<IEnumerable<Quote>> GetQuotes(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] 
-                HttpRequest req,
+                HttpRequest request,
             // Getting all documents from Cosmos DB "Products" collection as a method parameter
             [CosmosDB(databaseName: "WhatIfDemoDb", collectionName: "Products", ConnectionStringSetting = "CosmosDBConnection", SqlQuery = "select * from c")]
                 IEnumerable<Product> products,
             ILogger log)
         {
-            // The userId should be passed via query string
-            string userId = req.Query[nameof(userId)];
+            string userId = await Helpers.GetAccessingUserId(request);
 
             // Loading user-specific data from Azure SQL database
             var ctx = new WhatIfDemoDbDataContext();

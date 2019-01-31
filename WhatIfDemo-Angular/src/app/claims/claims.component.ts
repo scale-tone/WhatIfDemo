@@ -21,7 +21,7 @@ export class ClaimsComponent {
         private changeDetectorRef: ChangeDetectorRef)
     {}
 
-    private filesToUpload: File[] = [];
+    private filesToUpload: any = {};
     private driversLicenseFileInput: HTMLInputElement;
     private otherFilesInput: HTMLInputElement;
 
@@ -33,9 +33,7 @@ export class ClaimsComponent {
     // When user hits submit
     submitClaim() {
 
-        this.authService.getBlobCredentialsForUpload().subscribe(this.progressService.getObserver(null, (blobCredentials: any) => {
-
-            var blobService = AzureStorage.Blob.createBlobServiceWithSas(blobCredentials.blobUri, blobCredentials.sasToken);
+        this.authService.getBlobCredentialsForUpload(Object.keys(this.filesToUpload)).subscribe(this.progressService.getObserver(null, (blobCredentials: any) => {
 
             // Uploading all the files in parallel
             var progress = this.progressService.getObserver(null);
@@ -45,8 +43,10 @@ export class ClaimsComponent {
 
                 var file = this.filesToUpload[fileName];
 
-                count++;
-                blobService.createBlockBlobFromBrowserFile(uploadContainerName, this.authService.userId + "/" + fileName, file, {}, (err) => {
+                var blobService = AzureStorage.Blob.createBlobServiceWithSas(blobCredentials.blobUri, blobCredentials.sasTokens[count++]);
+
+                // Along with SAS tokens, the service returns us the folderName. SAS tokens won't fit any other folder.
+                blobService.createBlockBlobFromBrowserFile(blobCredentials.containerName, blobCredentials.folderName + "/" + fileName, file, {}, (err) => {
 
                     errorResult = err;
                     count--; if (count > 0) return;
@@ -54,7 +54,7 @@ export class ClaimsComponent {
                     // Now when all uploads have finished, cleaning up the form
                     if (!!this.driversLicenseFileInput) this.driversLicenseFileInput.value = '';
                     if (!!this.otherFilesInput) this.otherFilesInput.value = '';
-                    this.filesToUpload = [];
+                    this.filesToUpload = {};
 
                     if (!errorResult) {
                         alert('Your claim was submitted successfully!');
