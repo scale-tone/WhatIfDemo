@@ -4,6 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using SendGrid.Helpers.Mail;
+using Microsoft.ApplicationInsights;
 
 namespace WhatIfDemo
 {
@@ -12,6 +13,7 @@ namespace WhatIfDemo
         private static readonly TimeSpan ChargingPeriod = TimeSpan.FromSeconds(20);
         private static readonly TimeSpan ChargingInterval = TimeSpan.FromMinutes(2);
         private const string EmailAddressVariableName = "TestEmailAddress";
+        private static TelemetryClient telemetryClient = new TelemetryClient();
 
         // Processes orders from Service Bus queue
         // WARNING: to ensure your messages are not processed twice, better to set the Lock Duration period
@@ -116,6 +118,9 @@ namespace WhatIfDemo
 
             message.SetSubject($"Your regular payment for policy {policy.id} is due");
             message.AddContent("text/html", $"Please, pay ${policy.paymentAmount}");
+
+            // custom monitoring with app insights
+            telemetryClient.GetMetric("AverageRegularPayment").TrackValue((double)policy.paymentAmount);
 
             return message;
         }
