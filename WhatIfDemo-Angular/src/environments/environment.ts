@@ -9,7 +9,10 @@ export const environment = {
 	facebookAppId: '',
 	
 	// Deploy Azure Functions project to Azure and specify it's base URI (like 'https://myazurefunctionapp.azurewebsites.net') here:
-	backendBaseUri: ''
+    backendBaseUri: '',
+    
+    // Put your Application Insights instrumentation key here:
+    appInsightsInstrumentationKey: ''
 };
 
 /*
