@@ -22,7 +22,7 @@ namespace WhatIfDemo
                 IEnumerable<Product> products,
             ILogger log)
         {
-            string userId = await Helpers.GetAccessingUserId(request);
+            string userId = await Helpers.GetAccessingUserIdAsync(request);
 
             // Loading user-specific data from Azure SQL database
             var ctx = new WhatIfDemoDbDataContext();

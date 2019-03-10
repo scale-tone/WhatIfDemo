@@ -53,7 +53,7 @@ namespace WhatIfDemo
             };
 
             // userId will be used as a folder name. Generated tokens will be tied to that folder.
-            string userId = await Helpers.GetAccessingUserId(request);
+            string userId = await Helpers.GetAccessingUserIdAsync(request);
 
             // Generating tokens for each file
             var sasTokens = fileNames.Select(fileName => 

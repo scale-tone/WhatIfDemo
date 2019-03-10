@@ -7,11 +7,15 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Azure.ServiceBus;
 using Newtonsoft.Json;
 using Microsoft.Azure.ServiceBus.InteropExtensions;
+using System;
 
 namespace WhatIfDemo
 {
     public static class PurchaseFunction
     {
+        // Allowing this dependency to be mocked in unit tests
+        public static Func<HttpRequest, Task<string>> GetAccessingUserIdAsync = Helpers.GetAccessingUserIdAsync;
+
         // Takes an order from user and puts it to the order processing queue
         [FunctionName(nameof(Purchase))]
         [return: ServiceBus("Orders", Connection = "ServiceBusConnection")]
@@ -20,7 +24,7 @@ namespace WhatIfDemo
             ILogger log)
         {
             // Extracting userId from session token
-            string userId = await Helpers.GetAccessingUserId(request);
+            string userId = await GetAccessingUserIdAsync(request);
 
             using (var reader = new StreamReader(request.Body))
             {
@@ -41,16 +45,6 @@ namespace WhatIfDemo
                     // Using quoteId as message Id, to avail from built-in message deduplication
                     MessageId = requestJson.quoteId
                 };
-            }
-        }
-
-        // Does message binary serialization
-        private static byte[] ToByteArray<T>(this T msg)
-        {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                DataContractBinarySerializer<T>.Instance.WriteObject(stream, msg);
-                return stream.ToArray();
             }
         }
     }

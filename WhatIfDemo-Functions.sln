@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhatIfDemo-Functions", "WhatIfDemo-Functions\WhatIfDemo-Functions.csproj", "{5377C5AE-DB63-45CF-8294-3486FEC9CC36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatIfDemo-Functions.Test", "WhatIfDemo-Functions.Test\WhatIfDemo-Functions.Test.csproj", "{A1377FA6-17C1-4204-8F07-DFB13D62F02C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5377C5AE-DB63-45CF-8294-3486FEC9CC36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5377C5AE-DB63-45CF-8294-3486FEC9CC36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5377C5AE-DB63-45CF-8294-3486FEC9CC36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5377C5AE-DB63-45CF-8294-3486FEC9CC36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1377FA6-17C1-4204-8F07-DFB13D62F02C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1377FA6-17C1-4204-8F07-DFB13D62F02C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1377FA6-17C1-4204-8F07-DFB13D62F02C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1377FA6-17C1-4204-8F07-DFB13D62F02C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7EFCF8D0-B6EA-414C-99EA-60E4740C265C}
+	EndGlobalSection
+EndGlobal

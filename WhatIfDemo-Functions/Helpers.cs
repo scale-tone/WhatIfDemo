@@ -1,16 +1,18 @@
 using System;
 using System.Data.SqlClient;
+using System.IO;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.ServiceBus.InteropExtensions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace WhatIfDemo
 {
-    static class Helpers
+    public static class Helpers
     {
         public static async Task SaveChangesIdempotentlyAsync(this DbContext context, Action<SqlException> primaryKeyViolationHandler = null)
         {
@@ -33,6 +35,7 @@ namespace WhatIfDemo
                 }
             }
         }
+
         public static string GetHostName()
         {
             string hostName = Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME");
@@ -50,7 +53,7 @@ namespace WhatIfDemo
         private const string SessionTokenHeaderName = "X-ZUMO-AUTH";
         private const string AuthMeEndpointUri = "/.auth/me";
 
-        public static async Task<string> GetAccessingUserId(HttpRequest request)
+        public static async Task<string> GetAccessingUserIdAsync(HttpRequest request)
         {
             string userId = null;
 
@@ -82,6 +85,23 @@ namespace WhatIfDemo
             }
 
             return userId;
+        }
+
+        public static byte[] ToByteArray<T>(this T msg)
+        {
+            using (var stream = new MemoryStream())
+            {
+                DataContractBinarySerializer<T>.Instance.WriteObject(stream, msg);
+                return stream.ToArray();
+            }
+        }
+
+        public static T ToObject<T>(this byte[] data)
+        {
+            using (var stream = new MemoryStream(data))
+            {
+                return (T)DataContractBinarySerializer<T>.Instance.ReadObject(stream);
+            }
         }
     }
 }
