@@ -22,7 +22,7 @@ namespace WhatIfDemo
                 IEnumerable<Product> products,
             ILogger log)
         {
-            log.LogWarning($"### HostName: {Helpers.GetHostName()}");
+            log.LogWarning($"##### HostName: {Helpers.GetHostName()}");
 
             string userId = await Helpers.GetAccessingUserIdAsync(request);
 
