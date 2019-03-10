@@ -15,7 +15,7 @@
 
 # Regular expression pattern to find the version in the build number 
 # and then apply it to the assemblies
-$VersionRegex = "\d+\.\d+\.\d+\.\d+"
+$VersionRegex = "\d{4}\d{2}\d{2}\.\d+"
 
 # If this script is not running on a build server, remind user to 
 # set environment variables so that this script can be debugged
@@ -68,7 +68,7 @@ switch($VersionData.Count)
       }
 }
 $NewVersion = $VersionData[0]
-Write-Verbose "Version: $NewVersion"
+Write-Host "Version: $NewVersion"
 
 # Apply the version to the assembly property files
 $files = gci $Env:BUILD_SOURCESDIRECTORY -recurse -include "*Properties*","My Project" | 
