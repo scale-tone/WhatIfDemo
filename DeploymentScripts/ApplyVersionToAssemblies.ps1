@@ -49,7 +49,7 @@ if (-not $Env:BUILD_BUILDNUMBER)
     Write-Error ("BUILD_BUILDNUMBER environment variable is missing.")
     exit 1
 }
-Write-Verbose "BUILD_BUILDNUMBER: $Env:BUILD_BUILDNUMBER"
+Write-Host "BUILD_BUILDNUMBER: $Env:BUILD_BUILDNUMBER"
 
 # Get and validate the version data
 $VersionData = [regex]::matches($Env:BUILD_BUILDNUMBER,$VersionRegex)
