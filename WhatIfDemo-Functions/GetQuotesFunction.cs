@@ -22,6 +22,8 @@ namespace WhatIfDemo
                 IEnumerable<Product> products,
             ILogger log)
         {
+            log.LogWarning($"### HostName: {Helpers.GetHostName()}");
+
             string userId = await Helpers.GetAccessingUserIdAsync(request);
 
             // Loading user-specific data from Azure SQL database
