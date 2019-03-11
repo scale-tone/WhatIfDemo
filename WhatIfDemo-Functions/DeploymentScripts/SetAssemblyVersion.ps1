@@ -1,3 +1,4 @@
+# Sets the Function assembly version according to the current build number
 
 $buildVersion = $Env:BUILD_BUILDNUMBER
 $newFileVersion = $buildVersion.Substring(0, 4) + "." + $buildVersion.Substring(4, 2) + "." + $buildVersion.Substring(6, 2) + "." + $buildVersion.Substring(9)
