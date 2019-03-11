@@ -71,9 +71,10 @@ $NewVersion = $VersionData[0]
 Write-Host "Version: $NewVersion"
 
 # Apply the version to the assembly property files
-$files = gci $Env:BUILD_SOURCESDIRECTORY -recurse -include "*Properties*","My Project" | 
-    ?{ $_.PSIsContainer } | 
-    foreach { gci -Path $_.FullName -Recurse -include AssemblyInfo.* }
+$files = Get-ChildItem $Env:BUILD_SOURCESDIRECTORY -recurse -include "*Properties*","My Project" | 
+    ? { $_.PSIsContainer } | 
+    foreach { Get-ChildItem -Path $_.FullName -Recurse -include AssemblyInfo.* }
+
 if($files)
 {
     Write-Verbose "Will apply $NewVersion to $($files.count) files."
