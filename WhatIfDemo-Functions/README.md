@@ -22,6 +22,7 @@ Expects the following Application Settings to be present in your Azure Function 
 - **NotificationHubConnection** - connection string to your Azure Notification Hubs account.
 - **NotificationHubPath** - name of your Azure Notification Hubs namespace.
   
+  
 
 Once deployed, [Facebook authentication needs to be configured](https://docs.microsoft.com/en-us/azure/app-service/configure-authentication-provider-facebook) in your Function App.
   
