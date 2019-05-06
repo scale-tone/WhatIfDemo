@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhatIfDemo-Functions", "WhatIfDemo-Functions\WhatIfDemo-Functions.csproj", "{5377C5AE-DB63-45CF-8294-3486FEC9CC36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatIfDemo-Functions.Test", "WhatIfDemo-Functions.Test\WhatIfDemo-Functions.Test.csproj", "{A1377FA6-17C1-4204-8F07-DFB13D62F02C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhatIfDemo-Functions.UnitTest", "WhatIfDemo-Functions.Test\WhatIfDemo-Functions.UnitTest.csproj", "{A1377FA6-17C1-4204-8F07-DFB13D62F02C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
