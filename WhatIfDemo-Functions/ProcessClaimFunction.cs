@@ -103,10 +103,12 @@ namespace WhatIfDemo
                 message = $"Click to approve claim {claim.id} from user {claim.userId} with license {claim.licenseId}",
                 uri = $"{Helpers.GetHostName()}/api/{nameof(ApproveClaim)}?claimId={claim.id}"
             };
+            string fcmNotificationJson = $"{{\"data\":{payload.ToJson()}}}";
 
-            await hub.SendNotificationAsync(new FcmNotification($"{{\"data\":{payload.ToJson()}}}"));
+            await hub.SendNotificationAsync(new FcmNotification(fcmNotificationJson));
 
-            log.LogWarning($"Notification about claim {claim.id} from user {claim.userId} with license {claim.licenseId} sent!");
+            log.LogWarning("GCM Notification sent!");
+            log.LogWarning(fcmNotificationJson);
         }
 
         // Receives an approval via HTTP GET
