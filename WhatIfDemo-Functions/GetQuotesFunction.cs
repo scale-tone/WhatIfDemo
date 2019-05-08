@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
@@ -22,12 +23,13 @@ namespace WhatIfDemo
                 IEnumerable<Product> products,
             ILogger log)
         {
-            log.LogWarning($"!!! Host: {Helpers.GetHostName()}");
-
             string userId = await Helpers.GetAccessingUserIdAsync(request);
 
+            string azureSqlAccessToken = await new AzureServiceTokenProvider().GetAccessTokenAsync("https://database.windows.net/");
+            log.LogWarning($"SQL Access Token: {azureSqlAccessToken}");
+
             // Loading user-specific data from Azure SQL database
-            var ctx = new WhatIfDemoDbDataContext();
+            var ctx = new WhatIfDemoDbDataContext(azureSqlAccessToken);
 
             int policiesCount = await ctx.Policies.CountAsync(p => p.userId == userId);
             int claimsCount = await ctx.Claims.CountAsync(c => c.userId == userId);

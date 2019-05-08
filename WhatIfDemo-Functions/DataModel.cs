@@ -1,4 +1,5 @@
 using System;
+using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace WhatIfDemo
@@ -53,6 +54,17 @@ namespace WhatIfDemo
 
         public WhatIfDemoDbDataContext() 
             : base(new DbContextOptionsBuilder<WhatIfDemoDbDataContext>().UseSqlServer(Environment.GetEnvironmentVariable(ConnectionStringVariableName)).Options)
+        {
+        }
+
+        public WhatIfDemoDbDataContext(string azureSqlAccessToken)
+            : base(new DbContextOptionsBuilder<WhatIfDemoDbDataContext>()
+                .UseSqlServer(
+                    new SqlConnection(Environment.GetEnvironmentVariable(ConnectionStringVariableName))
+                    {
+                        AccessToken = azureSqlAccessToken
+                    }
+                ).Options)
         {
         }
 
