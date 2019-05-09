@@ -87,7 +87,7 @@ namespace WhatIfDemo
             ILogger log)
         {
             // Saving the policy to Azure SQL DB
-            var ctx = new WhatIfDemoDbDataContext();
+            var ctx = await WhatIfDemoDbDataContext.CreateAsync();
             ctx.Policies.Add(policy);
 
             await ctx.SaveChangesIdempotentlyAsync(ex => {

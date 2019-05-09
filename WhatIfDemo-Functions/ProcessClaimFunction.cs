@@ -132,7 +132,7 @@ namespace WhatIfDemo
             [ActivityTrigger] WhatIfDemoDbDataContext.Claim claim,
             ILogger log)
         {
-            var ctx = new WhatIfDemoDbDataContext();
+            var ctx = await WhatIfDemoDbDataContext.CreateAsync();
             ctx.Claims.Add(claim);
 
             await ctx.SaveChangesIdempotentlyAsync(ex => {
