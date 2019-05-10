@@ -13,7 +13,17 @@ Expects the following Application Settings to be present in your Azure Function 
 
 - **AzureWebJobsStorage** - connection string to Azure Storage account to be used.
 - **CosmosDBConnection** - connection string to Azure Cosmos DB account to be used. Expects a **WhatIfDemoDb** database with a **Products** collection to be created there. The collection should contain some [**Product**](https://github.com/scale-tone/WhatIfDemo/blob/master/WhatIfDemo-Functions/DataModel.cs#L15) documents.
-- **AzureSqlConnection** - connection string to an Azure SQL database. Expects [**Policies**](https://github.com/scale-tone/WhatIfDemo/blob/master/WhatIfDemo-Functions/DataModel.cs#L34) and [**Claims**](https://github.com/scale-tone/WhatIfDemo/blob/master/WhatIfDemo-Functions/DataModel.cs#L43) to be created there. [A SQL script for creating them is included](https://github.com/scale-tone/WhatIfDemo/blob/master/WhatIfDemo-Functions/WhatIfDemoDb.sql).
+- **AzureSqlConnection** - connection string to an Azure SQL database. 
+	[**Policies**](https://github.com/scale-tone/WhatIfDemo/blob/master/WhatIfDemo-Functions/DataModel.cs#L34) and [**Claims**](https://github.com/scale-tone/WhatIfDemo/blob/master/WhatIfDemo-Functions/DataModel.cs#L43) tables should be created there. [A SQL script for creating them is included](https://github.com/scale-tone/WhatIfDemo/blob/master/WhatIfDemo-Functions/WhatIfDemoDb.sql).
+	Current code expects [Azure Managed Identity](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview) to be configured for your Function App, so there should be no passwords in this connection string.
+	To make it work:
+	1) [Enable system-assigned Managed Identity for your Function App](https://docs.microsoft.com/en-us/azure/app-service/overview-managed-identity).
+	2) Execute this SQL against your Azure SQL DB (this adds your managed identity to db_owner role):
+		```
+		CREATE USER [<your azure app instance name>] FOR EXTERNAL PROVIDER;
+		ALTER ROLE db_owner ADD MEMBER [<your azure app instance name>];
+
+		```
 - **ServiceBusConnection** - connection string to Azure Service Bus account to be used.
 - **SendGridApiKey** - API key for [SendGrid](https://sendgrid.com/). Register and get a free tier.
 - **TestEmailAddress** - email address where test emails will be sent to. Put your own email there, don't put anyone else's.
