@@ -20,7 +20,7 @@ namespace WhatIfDemo
         private const string NotificationHubConnectionVariableName = "NotificationHubConnection";
         private const string NotificationHubPathVariableName = "NotificationHubPath";
 
-        static readonly Regex LicenseNrDateRegex = new Regex("4d. (?<LicenseNr>[0-9 ]{8,13})\"", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        static readonly Regex LicenseNrDateRegex = new Regex("4d. (?<LicenseNr>[0-9 ]{8,13})", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static string DriversLicenseFileName = "drivers-license";
         private static int MaxCognitiveServicesTimeoutInSeconds = 10;
