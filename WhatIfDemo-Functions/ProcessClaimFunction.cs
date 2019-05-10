@@ -50,7 +50,7 @@ namespace WhatIfDemo
 
             // Analyzing fileStream before starting a Saga, since fileStream isn't serializable
             // and since there's a built-in retry logic for BlobTriggers anyway.
-            string licenseId = await ExtractLicenseId(fileStream, log);
+            string licenseId = await ExtractLicenseId(fileStream);
 
             log.LogWarning($"Extracted driving license id {licenseId}, starting claim processing for user {userId}");
 
@@ -144,7 +144,7 @@ namespace WhatIfDemo
             log.LogWarning($"Saved claim {claim.id} from userId {claim.userId}");
         }
 
-        private static async Task<string> ExtractLicenseId(Stream fileStream, ILogger log)
+        private static async Task<string> ExtractLicenseId(Stream fileStream)
         {
             string cognitiveServicesKey = Environment.GetEnvironmentVariable(CognitiveServicesKeyVariableName);
             string cognitiveServicesUri = Environment.GetEnvironmentVariable(CognitiveServicesUriVariableName);
@@ -173,8 +173,6 @@ namespace WhatIfDemo
                     recognitionResultJson = await client.DownloadStringTaskAsync(recognitionResultUri);
                 }
                 while (((dynamic)JObject.Parse(recognitionResultJson)).status != "Succeeded");
-
-                log.LogWarning(recognitionResultJson);
 
                 var match = LicenseNrDateRegex.Match(recognitionResultJson);
                 if (match.Success)
