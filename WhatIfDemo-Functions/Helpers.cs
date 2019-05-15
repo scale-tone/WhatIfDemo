@@ -40,6 +40,7 @@ namespace WhatIfDemo
         {
             string hostName = Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME");
 
+            // this was needed, probably, to overcome some bug in earlier versions of runtime
             if (hostName.StartsWith("0.0.0.0"))
             {
                 return $"https://{hostName.Replace("0.0.0.0", "localhost")}";
