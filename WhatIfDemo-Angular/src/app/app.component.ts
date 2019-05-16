@@ -55,6 +55,8 @@ export class AppComponent implements OnInit {
 	// this happens when the user successfully logs in with their Facebook account
     onFacebookLogin(authResponse) {
         
+        console.log('Facebook Access Token: ' + authResponse.accessToken);
+
         this.authService.login(authResponse.accessToken)
             .subscribe(this.progressService.getObserver(this.changeDetectorRef));
     }
