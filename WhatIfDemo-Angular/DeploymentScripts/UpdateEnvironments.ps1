@@ -1,3 +1,3 @@
 # 
 
-Write-Host "FacebookAppId is now: " + $Env:facebookAppId
+Write-Host "FacebookAppId is now: $Env:facebookAppId"
