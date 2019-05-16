@@ -1,9 +1,11 @@
-param (
-    $facebookAppId
-)
+# Update the environment.prod.ts file with parameter values taken from Environment Variables.
+# You need to specify these environment variables (and values for them) for the build task.
 
-Write-Host "FbAppId: $facebookAppId"
+$filePath = $Env:BUILD_SOURCESDIRECTORY + "\WhatIfDemo-Angular\src\environments\environment.prod.ts"
+$fileText = Get-Content($filePath)
 
-Write-Host "Using input macro, whatever it is: ($facebookAppId)"
+$fileText = $fileText -replace ("facebookAppId: ''"), ("facebookAppId: '$Env:facebookAppId'")
+$fileText = $fileText -replace ("backendBaseUri: ''"), ("backendBaseUri: '$Env:backendBaseUri'")
+$fileText = $fileText -replace ("appInsightsInstrumentationKey: ''"), ("appInsightsInstrumentationKey: '$Env:appInsightsInstrumentationKey'")
 
-Write-Host "Custom env variable: $Env:KonstTestVariable"
+$fileText | Out-File $filePath -Encoding UTF8
