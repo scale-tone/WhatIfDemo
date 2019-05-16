@@ -1,5 +1,7 @@
-# 
+param (
+    $facebookAppId
+)
 
-$fbAppId = $Env:facebookAppId
+Write-Host "FbAppId: $facebookAppId"
 
-Write-Host "FacebookAppId is now: $fbAppId"
+Write-Host "Custom env variable: $Env:KonstTestVariable"
