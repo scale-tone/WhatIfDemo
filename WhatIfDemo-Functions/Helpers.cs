@@ -1,6 +1,7 @@
 using System;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -54,7 +55,15 @@ namespace WhatIfDemo
         private const string SessionTokenHeaderName = "X-ZUMO-AUTH";
         private const string AuthMeEndpointUri = "/.auth/me";
 
-        public static async Task<string> GetAccessingUserIdAsync(HttpRequest request)
+        // Obtains information about accessing user by making a local HTTP call to /.auth/me endpoint.
+        public static Task<string> GetAccessingUserIdAsync(HttpRequest request)
+        {
+            return GetAccessingUserIdAsync(request, null);
+        }
+
+        // Obtains information about accessing user by making a local HTTP call to /.auth/me endpoint.
+        // acceptedAuthProviders, if specified, should contain the list of accepted authentication providers, e.g. "facebook", "aad" etc.
+        public static async Task<string> GetAccessingUserIdAsync(HttpRequest request, string[] acceptedAuthProviders = null)
         {
             string userId = null;
 
@@ -67,6 +76,18 @@ namespace WhatIfDemo
                 client.Headers.Add(SessionTokenHeaderName, request.Headers[SessionTokenHeaderName]);
 
                 dynamic authMeResponse = JsonConvert.DeserializeObject(await client.DownloadStringTaskAsync(uri));
+
+                // Checking the auth provider
+                if(acceptedAuthProviders != null)
+                {
+                    string authProviderName = authMeResponse[0].provider_name;
+                    if (!acceptedAuthProviders.Contains(authProviderName))
+                    {
+                        // TODO: Add better error handling
+                        throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                    }
+                }
+
                 dynamic userClaims = authMeResponse[0].user_claims;
 
                 foreach (dynamic claim in userClaims)

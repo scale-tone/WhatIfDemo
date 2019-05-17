@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhatIfDemo-Functions", "Wha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhatIfDemo-Functions.UnitTest", "WhatIfDemo-Functions.UnitTest\WhatIfDemo-Functions.UnitTest.csproj", "{A1377FA6-17C1-4204-8F07-DFB13D62F02C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatIfDemo-Functions.IntegrationTest", "WhatIfDemo-Functions.IntegrationTest\WhatIfDemo-Functions.IntegrationTest.csproj", "{CDFEFE0D-32CB-49C5-B1F6-89C710C4A68A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A1377FA6-17C1-4204-8F07-DFB13D62F02C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1377FA6-17C1-4204-8F07-DFB13D62F02C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1377FA6-17C1-4204-8F07-DFB13D62F02C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDFEFE0D-32CB-49C5-B1F6-89C710C4A68A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDFEFE0D-32CB-49C5-B1F6-89C710C4A68A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDFEFE0D-32CB-49C5-B1F6-89C710C4A68A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDFEFE0D-32CB-49C5-B1F6-89C710C4A68A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
