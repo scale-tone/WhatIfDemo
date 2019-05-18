@@ -20,6 +20,9 @@
 
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WhatIfDemo-Functions.IntegrationTest\WhatIfDemo-Functions.IntegrationTest.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
