@@ -11,11 +11,11 @@ Expects the following environment variables to be present:
 To allow this integration test to make calls to your [WhatIfDemo-Functions](https://github.com/scale-tone/WhatIfDemo/tree/master/WhatIfDemo-Functions) backend, you can use a specially designated [Azure Service Principal](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?view=azure-cli-latest). To do that:
 1. Create a new Service Principal via Azure CLI:
 ```
-  az ad sp create-for-rbac --name MyIntegrationTestServicePrincipal
+  az ad sp create-for-rbac --name <MyIntegrationTestServicePrincipal>
 ```
 and take a note of it's **appId** and **password** from the command output.
 
-2. Get that newly created Service Principal's **ObjectId** (not that it is **not** the same as **appId** returned by the step1):
+2. Get that newly created Service Principal's **ObjectId** (note that it is **not** the same as **appId** returned by the step1):
 ```
    az ad sp show --id <appId-from-step1>
 ```
