@@ -5,9 +5,8 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.ServiceBus;
-using Newtonsoft.Json;
-using Microsoft.Azure.ServiceBus.InteropExtensions;
 using System;
+using WhatIfDemo.Common;
 
 namespace WhatIfDemo
 {
@@ -28,22 +27,22 @@ namespace WhatIfDemo
 
             using (var reader = new StreamReader(request.Body))
             {
-                dynamic requestJson = JsonConvert.DeserializeObject(await reader.ReadToEndAsync());
+                dynamic requestBody = (await reader.ReadToEndAsync()).FromJson();
 
                 // Creating an Order message
                 var orderMsg = new OrderMessage
                 {
                     userId = userId,
-                    productId = requestJson.productId,
-                    price = requestJson.price
+                    productId = requestBody.productId,
+                    price = requestBody.price
                 };
 
-                log.LogWarning($"Got an order from userId {userId} with quoteId {requestJson.quoteId}");
+                log.LogWarning($"Got an order from userId {userId} with quoteId {requestBody.quoteId}");
 
                 return new Message(orderMsg.ToByteArray())
                 {
                     // Using quoteId as message Id, to avail from built-in message deduplication
-                    MessageId = requestJson.quoteId
+                    MessageId = requestBody.quoteId
                 };
             }
         }

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.ServiceBus.InteropExtensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -8,8 +7,9 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using WhatIfDemo;
+using WhatIfDemo.Common;
 
-namespace WhatIfDemo_Functions.Test
+namespace WhatIfDemo.Test
 {
     [TestClass]
     public class PurchaseFunctionTest

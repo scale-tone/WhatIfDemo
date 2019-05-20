@@ -20,6 +20,7 @@
 
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WhatIfDemo-Functions.Common\WhatIfDemo-Functions.Common.csproj" />
     <ProjectReference Include="..\WhatIfDemo-Functions.IntegrationTest\WhatIfDemo-Functions.IntegrationTest.csproj" />
   </ItemGroup>
   <ItemGroup>

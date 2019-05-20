@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SendGrid.Helpers.Mail;
 using Microsoft.ApplicationInsights;
+using WhatIfDemo.Common;
 
 namespace WhatIfDemo
 {
@@ -53,7 +54,7 @@ namespace WhatIfDemo
             // Configuring retries for SavePolicyToDb activity
             var retryOptions = new RetryOptions(TimeSpan.FromSeconds(5), 3);
             policy = await context.CallActivityWithRetryAsync<WhatIfDemoDbDataContext.Policy>(nameof(SavePolicyToDb), retryOptions, policy);
-
+            
             // Now let's start charging the customer via a sub-orchestration
             await context.CallSubOrchestratorAsync(nameof(ProcessOrderSubOrchestrator), policy);
         }
@@ -109,6 +110,12 @@ namespace WhatIfDemo
             [ActivityTrigger] WhatIfDemoDbDataContext.Policy policy, ILogger log)
         {
             string emailAddress = Environment.GetEnvironmentVariable(EmailAddressVariableName);
+
+            if (string.IsNullOrEmpty(emailAddress))
+            {
+                log.LogWarning($"TestEmailAddress is not specified, so not sending email to (userId {policy.userId}) about policy {policy.id}");
+                return null;
+            }
 
             log.LogWarning($"Sending email to {emailAddress} (userId {policy.userId}) about policy {policy.id}");
 

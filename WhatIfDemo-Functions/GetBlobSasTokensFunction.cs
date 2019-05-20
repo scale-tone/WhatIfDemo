@@ -7,9 +7,9 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.IO;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using WhatIfDemo.Common;
 
 namespace WhatIfDemo
 {
@@ -76,10 +76,10 @@ namespace WhatIfDemo
             var result = new List<string>();
             using (var reader = new StreamReader(request.Body))
             {
-                dynamic requestJson = JsonConvert.DeserializeObject(await reader.ReadToEndAsync());
+                string requestJson = await reader.ReadToEndAsync();
 
                 // expecting the request body to be an array of strings
-                foreach (dynamic fileName in requestJson)
+                foreach (dynamic fileName in requestJson.FromJson())
                 {
                     result.Add(fileName.ToString());
                 }

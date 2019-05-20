@@ -11,10 +11,11 @@ using Microsoft.Azure.ServiceBus.InteropExtensions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace WhatIfDemo
+namespace WhatIfDemo.Common
 {
     public static class Helpers
     {
+        // Saves changes to DB, ignoring potential Primary Key Violation exceptions
         public static async Task SaveChangesIdempotentlyAsync(this DbContext context, Action<SqlException> primaryKeyViolationHandler = null)
         {
             try
@@ -37,6 +38,7 @@ namespace WhatIfDemo
             }
         }
 
+        // Gets the DNS name of current App Service (or current devbox)
         public static string GetHostName()
         {
             string hostName = Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME");
@@ -52,9 +54,6 @@ namespace WhatIfDemo
             }
         }
 
-        private const string SessionTokenHeaderName = "X-ZUMO-AUTH";
-        private const string AuthMeEndpointUri = "/.auth/me";
-
         // Obtains information about accessing user by making a local HTTP call to /.auth/me endpoint.
         public static Task<string> GetAccessingUserIdAsync(HttpRequest request)
         {
@@ -69,13 +68,13 @@ namespace WhatIfDemo
 
             // Facebook claims are not passed via ClaimsPrincipal yet, unfortunately.
             // So we'll just make a local call to our own /.auth/me endpoint returning user info.
-            string uri = GetHostName() + AuthMeEndpointUri;
+            string uri = GetHostName() + Constants.AuthMeEndpointUri;
             using (var client = new WebClient())
             {
                 // Propagating the incoming session token, passed via X-ZUMO-AUTH header
-                client.Headers.Add(SessionTokenHeaderName, request.Headers[SessionTokenHeaderName]);
+                client.Headers.Add(Constants.SessionTokenHeaderName, request.Headers[Constants.SessionTokenHeaderName]);
 
-                dynamic authMeResponse = JsonConvert.DeserializeObject(await client.DownloadStringTaskAsync(uri));
+                dynamic authMeResponse = (await client.DownloadStringTaskAsync(uri)).FromJson();
 
                 // Checking the auth provider
                 if(acceptedAuthProviders != null)
@@ -124,6 +123,16 @@ namespace WhatIfDemo
             {
                 return (T)DataContractBinarySerializer<T>.Instance.ReadObject(stream);
             }
+        }
+
+        public static string ToJson(this object o)
+        {
+            return JsonConvert.SerializeObject(o);
+        }
+
+        public static dynamic FromJson(this string json)
+        {
+            return JsonConvert.DeserializeObject(json);
         }
     }
 }
