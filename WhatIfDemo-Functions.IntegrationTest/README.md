@@ -13,7 +13,7 @@ To allow this integration test to make calls to your [WhatIfDemo-Functions](http
 ```
   az ad sp create-for-rbac --name MyIntegrationTestServicePrincipal
 ```
-and take a note of it's **appId** and **password** in the command output.
+and take a note of it's **appId** and **password** from the command output.
 
 2. Get that newly created Service Principal's **ObjectId** (not that it is **not** the same as **appId** returned by the step1):
 ```
