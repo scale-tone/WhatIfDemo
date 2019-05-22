@@ -1,9 +1,9 @@
-using Microsoft.Azure.Services.AppAuthentication;
+// using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Net;
+// using System.Net;
 using System.Threading.Tasks;
-using WhatIfDemo.Common;
+// using WhatIfDemo.Common;
 
 namespace WhatIfDemo.IntegrationTest
 {
