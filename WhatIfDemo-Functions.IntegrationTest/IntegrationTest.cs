@@ -29,11 +29,15 @@ namespace WhatIfDemo.IntegrationTest
         private static string EasyAuthSessionToken;
 
         [ClassInitialize]
-        public static async Task Init(TestContext _)
+        public static async Task Init(TestContext testContext)
         {
+            testContext.WriteLine("### IntegrationTest.Init() 1");
+
             // This ctor will take the connection string from AzureServicesAuthConnectionString environment variable
             var azureServiceTokenProvider = new AzureServiceTokenProvider();
             string accessToken = await azureServiceTokenProvider.GetAccessTokenAsync(AppServiceBaseUrl);
+
+            testContext.WriteLine("### IntegrationTest.Init() 2");
 
             // Exchanging AAD access token to EasyAuth session token and saving it in a static variable
             using (var client = new WebClient())
@@ -43,11 +47,15 @@ namespace WhatIfDemo.IntegrationTest
 
                 EasyAuthSessionToken = stringResponse.FromJson().authenticationToken;
             }
+
+            testContext.WriteLine("### IntegrationTest.Init() 1");
         }
 
         [TestMethod]
         public async Task TestGetQuotes()
         {
+            this.TestContext.WriteLine("### IntegrationTest.TestGetQuotes() started");
+
             decimal priceBeforePurchase, priceAfterPurchase;
 
             using (var client = new WebClient())
