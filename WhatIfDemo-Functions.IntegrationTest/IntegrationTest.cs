@@ -1,9 +1,9 @@
-// using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-// using System.Net;
+using System.Net;
 using System.Threading.Tasks;
-// using WhatIfDemo.Common;
+using WhatIfDemo.Common;
 
 namespace WhatIfDemo.IntegrationTest
 {
@@ -27,17 +27,13 @@ namespace WhatIfDemo.IntegrationTest
 
         // EasyAuth session token, obtained at the beginning of each test run
         private static string EasyAuthSessionToken;
-/*
-        [ClassInitialize]
-        public static async Task Init(TestContext testContext)
-        {
-            testContext.WriteLine("### IntegrationTest.Init() 1");
 
+        [ClassInitialize]
+        public static async Task Init(TestContext _)
+        {
             // This ctor will take the connection string from AzureServicesAuthConnectionString environment variable
             var azureServiceTokenProvider = new AzureServiceTokenProvider();
             string accessToken = await azureServiceTokenProvider.GetAccessTokenAsync(AppServiceBaseUrl);
-
-            testContext.WriteLine("### IntegrationTest.Init() 2");
 
             // Exchanging AAD access token to EasyAuth session token and saving it in a static variable
             using (var client = new WebClient())
@@ -47,15 +43,11 @@ namespace WhatIfDemo.IntegrationTest
 
                 EasyAuthSessionToken = stringResponse.FromJson().authenticationToken;
             }
-
-            testContext.WriteLine("### IntegrationTest.Init() 1");
         }
-*/
+
         [TestMethod]
         public async Task TestGetQuotes()
         {
-            this.TestContext.WriteLine("### IntegrationTest.TestGetQuotes() started");
-/*
             decimal priceBeforePurchase, priceAfterPurchase;
 
             using (var client = new WebClient())
@@ -97,7 +89,6 @@ namespace WhatIfDemo.IntegrationTest
 
             this.TestContext.WriteLine($"Current discount: {discount}");
             Assert.IsTrue(discount > 0.03m && discount < 0.07m);
-*/
         }
     }
 }
