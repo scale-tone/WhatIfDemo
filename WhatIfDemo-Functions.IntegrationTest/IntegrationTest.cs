@@ -25,24 +25,15 @@ namespace WhatIfDemo.IntegrationTest
             }
         }
 
-        // EasyAuth session token, obtained at the beginning of each test run
-        private static string EasyAuthSessionToken;
+        // OAuth2 access token
+        private static string AccessToken;
 
         [ClassInitialize]
         public static async Task Init(TestContext _)
         {
             // This ctor will take the connection string from AzureServicesAuthConnectionString environment variable
             var azureServiceTokenProvider = new AzureServiceTokenProvider();
-            string accessToken = await azureServiceTokenProvider.GetAccessTokenAsync(AppServiceBaseUrl);
-
-            // Exchanging AAD access token to EasyAuth session token and saving it in a static variable
-            using (var client = new WebClient())
-            {
-                string stringResponse = await client.UploadStringTaskAsync(AppServiceBaseUrl + Constants.AuthAadLoginEndpointUri, 
-                    new { access_token = accessToken }.ToJson());
-
-                EasyAuthSessionToken = stringResponse.FromJson().authenticationToken;
-            }
+            AccessToken = await azureServiceTokenProvider.GetAccessTokenAsync(AppServiceBaseUrl);
         }
 
         [TestMethod]
@@ -52,7 +43,7 @@ namespace WhatIfDemo.IntegrationTest
 
             using (var client = new WebClient())
             {
-                client.Headers.Add(Constants.SessionTokenHeaderName, EasyAuthSessionToken);
+                client.Headers.Add(Constants.AuthorizationHeaderName, "Bearer " + AccessToken);
 
                 // Cleaning up
                 await client.DownloadStringTaskAsync(AppServiceBaseUrl + "/api/Cleanup");
@@ -73,7 +64,7 @@ namespace WhatIfDemo.IntegrationTest
                 await client.UploadStringTaskAsync(AppServiceBaseUrl + "/api/Purchase", product2.ToString());
 
                 // Giving it some time to process the purchase
-                await Task.Delay(TimeSpan.FromSeconds(10));
+                await Task.Delay(TimeSpan.FromSeconds(15));
 
                 // Getting quotes again and checking that discount was applied
                 stringResponse = await client.DownloadStringTaskAsync(AppServiceBaseUrl + "/api/GetQuotes");
