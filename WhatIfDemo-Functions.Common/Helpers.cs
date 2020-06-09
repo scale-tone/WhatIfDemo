@@ -71,7 +71,8 @@ namespace WhatIfDemo.Common
             string uri = GetHostName() + Constants.AuthMeEndpointUri;
             using (var client = new WebClient())
             {
-                // Propagating the incoming token
+                // Propagating the incoming tokens (it could be either X-ZUMO-AUTH or Authorization)
+                client.Headers.Add(Constants.SessionTokenHeaderName, request.Headers[Constants.SessionTokenHeaderName]);
                 client.Headers.Add(Constants.AuthorizationHeaderName, request.Headers[Constants.AuthorizationHeaderName]);
 
                 dynamic authMeResponse = (await client.DownloadStringTaskAsync(uri)).FromJson();

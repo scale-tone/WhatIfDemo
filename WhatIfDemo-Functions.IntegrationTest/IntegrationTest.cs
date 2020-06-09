@@ -25,15 +25,24 @@ namespace WhatIfDemo.IntegrationTest
             }
         }
 
-        // OAuth2 access token
-        private static string AccessToken;
+        // EasyAuth session token, obtained at the beginning of each test run
+        private static string EasyAuthSessionToken;
 
         [ClassInitialize]
         public static async Task Init(TestContext _)
         {
             // This ctor will take the connection string from AzureServicesAuthConnectionString environment variable
             var azureServiceTokenProvider = new AzureServiceTokenProvider();
-            AccessToken = await azureServiceTokenProvider.GetAccessTokenAsync(AppServiceBaseUrl);
+            string accessToken = await azureServiceTokenProvider.GetAccessTokenAsync(AppServiceBaseUrl);
+
+            // Exchanging AAD access token to EasyAuth session token and saving it in a static variable
+            using (var client = new WebClient())
+            {
+                string stringResponse = await client.UploadStringTaskAsync(AppServiceBaseUrl + Constants.AuthAadLoginEndpointUri,
+                    new { access_token = accessToken }.ToJson());
+
+                EasyAuthSessionToken = stringResponse.FromJson().authenticationToken;
+            }
         }
 
         [TestMethod]
@@ -43,7 +52,7 @@ namespace WhatIfDemo.IntegrationTest
 
             using (var client = new WebClient())
             {
-                client.Headers.Add(Constants.AuthorizationHeaderName, "Bearer " + AccessToken);
+                client.Headers.Add(Constants.SessionTokenHeaderName, EasyAuthSessionToken);
 
                 // Cleaning up
                 await client.DownloadStringTaskAsync(AppServiceBaseUrl + "/api/Cleanup");
