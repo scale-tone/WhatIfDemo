@@ -73,7 +73,7 @@ namespace WhatIfDemo.IntegrationTest
                 await client.UploadStringTaskAsync(AppServiceBaseUrl + "/api/Purchase", product2.ToString());
 
                 // Giving it some time to process the purchase
-                await Task.Delay(TimeSpan.FromSeconds(15));
+                await Task.Delay(TimeSpan.FromSeconds(20));
 
                 // Getting quotes again and checking that discount was applied
                 stringResponse = await client.DownloadStringTaskAsync(AppServiceBaseUrl + "/api/GetQuotes");
