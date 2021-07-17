@@ -10,3 +10,17 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet publish'
+  inputs:
+    command: publish
+    projects: WhatIfDemo-Functions
+    publishWebProjects: false
+    zipAfterPublish: false
+    modifyOutputPath: false
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
