@@ -18,6 +18,7 @@ steps:
     publishWebProjects: false
     zipAfterPublish: false
     modifyOutputPath: false
+
 - task: az-func-as-a-graph@1
   inputs:
     projectFolder: '$(System.DefaultWorkingDirectory)'
