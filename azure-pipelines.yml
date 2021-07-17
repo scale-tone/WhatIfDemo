@@ -18,7 +18,13 @@ steps:
     publishWebProjects: false
     zipAfterPublish: false
     modifyOutputPath: false
-
+- task: az-func-as-a-graph@1
+  inputs:
+    projectFolder: '$(System.DefaultWorkingDirectory)'
+    outputFile: '$(Build.ArtifactStagingDirectory)/$(Build.Repository.Name).diagram.htm'
+    repoUri: '$(Build.Repository.Uri)'
+    repoName: '$(Build.Repository.Name)'
+    branchName: '$(Build.SourceBranchName)'
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
