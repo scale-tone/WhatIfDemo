@@ -3,16 +3,5 @@
   "Values": {
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
 
-    "AzureWebJobsStorage": "@KeeShepherd(WhatIfDemo-StorageConnString)",
-    "CosmosDBConnection": "@KeeShepherd(WhatIfDemo-CosmosDbConnString)",
-    "AzureSqlConnection": "@KeeShepherd(WhatIfDemo-SqlConnString)",
-    "ServiceBusConnection": "@KeeShepherd(WhatIfDemo-ServiceBusConnString)",
-    "SendGridApiKey": "@KeeShepherd(WhatIfDemo-SendGridApiKey)",
-    "TestEmailAddress": "@KeeShepherd(WhatIfDemo-TestEmailAddress)",
-    "CognitiveServicesUri": "https://northeurope.api.cognitive.microsoft.com/vision/v2.0/recognizeText?mode=Printed",
-    "CognitiveServicesKey": "@KeeShepherd(WhatIfDemo-CognitiveServicesKey)",
-    "NotificationHubConnection": "@KeeShepherd(WhatIfDemo-NotificationHubConnString)",
-    "NotificationHubPath": "KonstServerlessTest",
-    "APPINSIGHTS_INSTRUMENTATIONKEY": "@KeeShepherd(WhatIfDemo-AppInsightsInstrumentationKey)"
   }
 }
