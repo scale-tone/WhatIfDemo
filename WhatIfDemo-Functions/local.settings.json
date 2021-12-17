@@ -14,6 +14,6 @@
     "CognitiveServicesKey": "@KeeShepherd(WhatIfDemo-CognitiveServicesKey)",
     "NotificationHubConnection": "@KeeShepherd(WhatIfDemo-NotificationHubConnString)",
     "NotificationHubPath": "KonstServerlessTest",
-    "APPINSIGHTS_INSTRUMENTATIONKEY": "@KeeShepherd(WhatIfDemo-AppInsightsInstrumentationKey)"
+    "APPINSIGHTS_INSTRUMENTATIONKEY": "@KeeShepherd(WhatIfDemo-InstrumentationKey)"
   }
 }
