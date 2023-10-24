@@ -10,12 +10,10 @@ jobs:
 
     - uses: actions/checkout@v3
 
-    - name: ls1
-      run: ls
-
-    - name: ls2
-      run: ls ${{ github.workspace }}   
-    
     - uses: scale-tone/az-func-as-a-graph@github-action-alpha8
       with:
-        projectFolder: ${{ github.workspace }}/WhatIfDemo-Functions
+        projectFolder: WhatIfDemo-Functions
+
+    - uses: actions/upload-artifact@v3
+      with:
+        path: WhatIfDemo.diagram.htm
