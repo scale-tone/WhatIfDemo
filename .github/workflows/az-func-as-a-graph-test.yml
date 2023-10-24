@@ -7,6 +7,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+    - name: ls1
+      run: ls
+
+    - name: ls2
+      run: ls ${{ github.workspace }}   
+    
     - uses: scale-tone/az-func-as-a-graph@github-action-alpha8
       with:
         projectFolder: ${{ github.workspace }}/WhatIfDemo-Functions
