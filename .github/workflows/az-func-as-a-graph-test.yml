@@ -12,7 +12,7 @@ jobs:
 
     - uses: scale-tone/az-func-as-a-graph@github-action-alpha14
       with:
-        projectFolder: WhatIfDemo-Functions
+        projectFolder: ${{ github.workspace }}/WhatIfDemo-Functions
         outputFile: graph.htm
 
     - uses: actions/upload-artifact@v3
