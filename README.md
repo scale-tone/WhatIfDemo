@@ -5,4 +5,5 @@ A set of demo projects demonstrating the core concepts of Azure Serverless.
 
 - [**WhatIfDemo-Functions**](https://github.com/scale-tone/WhatIfDemo/tree/master/WhatIfDemo-Functions) - Azure Functions written in C#, processing requests from [WhatIfDemo-Angular](https://github.com/scale-tone/WhatIfDemo/tree/master/WhatIfDemo-Angular). Stores data in Cosmos DB, Azure SQL and Azure Blobs, communicates with Azure Service Bus, Azure Notiication Hubs, Azure Cognitive Services and SendGrid.
 
-  1. One
+1. One
+2. Two
