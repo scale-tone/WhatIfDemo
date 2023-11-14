@@ -7,3 +7,4 @@ A set of demo projects demonstrating the core concepts of Azure Serverless.
 
 1. One
 2. Two
+3. Three
