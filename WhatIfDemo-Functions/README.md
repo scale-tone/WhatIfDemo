@@ -3,6 +3,9 @@
 2. Two
 
 
+11. Eleven
+
+
 A set of Azure Functions written in C# and demonstrating some of the core concepts: different types of triggers, in/out bindings, Durable Functions and authentication.
 While trying to keep things simple.
 
