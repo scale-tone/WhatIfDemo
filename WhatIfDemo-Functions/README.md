@@ -3,7 +3,6 @@
 2. Two
 
 
-10. Ten
 11. Eleven
 
 
