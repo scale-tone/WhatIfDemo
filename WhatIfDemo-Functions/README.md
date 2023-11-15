@@ -1,6 +1,6 @@
 # WhatIfDemo-Functions
 
-1000. Thousand
+1001. Thousand and one
 
 A set of Azure Functions written in C# and demonstrating some of the core concepts: different types of triggers, in/out bindings, Durable Functions and authentication.
 While trying to keep things simple.
